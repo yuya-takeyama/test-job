@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"os/signal"
 	"strconv"
 	"syscall"
 	"time"
@@ -10,6 +11,7 @@ import (
 
 func main() {
 	signalChan := make(chan os.Signal, 1)
+	signal.Notify(signalChan)
 
 	go func() {
 		for {
