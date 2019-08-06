@@ -4,10 +4,35 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"syscall"
 	"time"
 )
 
 func main() {
+	signalChan := make(chan os.Signal, 1)
+
+	go func() {
+		for {
+			s := <-signalChan
+			switch s {
+			case syscall.SIGHUP:
+				fmt.Println("Detected SIGHUP")
+
+			case syscall.SIGINT:
+				fmt.Println("Detected SIGINT")
+
+			case syscall.SIGTERM:
+				fmt.Println("Detected SIGTERM")
+
+			case syscall.SIGQUIT:
+				fmt.Println("Detected SIGQUIT")
+
+			default:
+				fmt.Println("Unknown signal")
+			}
+		}
+	}()
+
 	argc := len(os.Args)
 
 	var n int
