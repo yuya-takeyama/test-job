@@ -43,6 +43,10 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	exitStatus, exitErr := strconv.Atoi(os.Getenv("EXIT_STATUS"))
+	if exitErr != nil {
+		panic(err)
+	}
 
 	for i := 1; i <= n; i++ {
 		fmt.Printf("Running: %d\n", i)
@@ -50,4 +54,5 @@ func main() {
 	}
 
 	fmt.Println("Finished")
+	os.Exit(exitStatus)
 }
