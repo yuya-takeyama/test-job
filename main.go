@@ -19,15 +19,19 @@ func main() {
 			switch s {
 			case syscall.SIGHUP:
 				fmt.Println("Detected SIGHUP")
+				os.Exit(1)
 
 			case syscall.SIGINT:
 				fmt.Println("Detected SIGINT")
+				os.Exit(1)
 
 			case syscall.SIGTERM:
 				fmt.Println("Detected SIGTERM")
+				os.Exit(1)
 
 			case syscall.SIGQUIT:
 				fmt.Println("Detected SIGQUIT")
+				os.Exit(1)
 
 			default:
 				fmt.Println("Unknown signal")
@@ -35,34 +39,15 @@ func main() {
 		}
 	}()
 
-	argc := len(os.Args)
-
-	var n int
-	var err error
-	if argc < 2 {
-		n = 1
-	} else {
-		n, err = strconv.Atoi(os.Args[1])
-		if err != nil {
-			panic(err)
-		}
+	n, err := strconv.Atoi(os.Getenv("TIMES"))
+	if err != nil {
+		panic(err)
 	}
 
-	var exitCode int
-	if argc < 3 {
-		exitCode = 0
-	} else {
-		exitCode, err = strconv.Atoi(os.Args[2])
-		if err != nil {
-			panic(err)
-		}
-	}
-
-	for i := 0; i < n; i++ {
+	for i := 1; i <= n; i++ {
 		fmt.Printf("Running: %d\n", i)
 		time.Sleep(1 * time.Second)
 	}
 
 	fmt.Println("Finished")
-	os.Exit(exitCode)
 }
